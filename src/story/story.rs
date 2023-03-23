@@ -1,5 +1,6 @@
 //! Structures which contain parsed `Ink` stories and content presented to the user.
 
+use std::collections::HashMap;
 use crate::{
     consts::ROOT_KNOT_NAME,
     error::{runtime::internal::StackError, InklingError, ReadError},
@@ -16,6 +17,7 @@ use crate::{
 
 #[cfg(feature = "serde_support")]
 use serde::{Deserialize, Serialize};
+use crate::story::types::VariableSet;
 
 #[derive(Debug)]
 #[cfg_attr(feature = "serde_support", derive(Deserialize, Serialize))]
@@ -181,6 +183,10 @@ impl Story {
         let selection = self.selected_choice.take();
 
         self.follow_story_wrapper(selection, line_buffer)
+    }
+
+    pub fn get_global_variables(&self) -> &VariableSet {
+        &self.data.variables
     }
 
     /// Make a choice from a given set of options.
